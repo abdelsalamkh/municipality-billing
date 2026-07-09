@@ -1,0 +1,131 @@
+<% layout('layouts/main') %>
+
+<div class="container">
+    <% if (typeof error !== 'undefined') { %>
+
+        <div class="alert alert-danger">
+        
+            <%= error %>
+        
+        </div>
+        
+        <% } %>
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-6">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">
+                        تعديل المستخدم
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <form
+                        method="POST"
+                        action="/users/edit/<%= cashier.id %>">
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                الاسم
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="name"
+                                class="form-control"
+                                value="<%= cashier.name %>"
+                                required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                اسم المستخدم
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="username"
+                                class="form-control"
+                                value="<%= cashier.username %>"
+                                required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                كلمة المرور الجديدة
+
+                            </label>
+
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-control">
+
+                            <small class="text-muted">
+                                اترك هذا الحقل فارغاً إذا كنت لا ترغب في تغيير كلمة المرور.
+                            </small>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                الدور
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="<%= cashier.role === 'admin' ? 'مدير النظام' : 'أمين صندوق' %>"
+                                disabled>
+
+                        </div>
+
+                        <div class="d-flex gap-2">
+
+                            <button
+                                type="submit"
+                                class="btn btn-success">
+
+                                حفظ التعديلات
+
+                            </button>
+
+                            <a
+                                href="/users"
+                                class="btn btn-secondary">
+
+                                إلغاء
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

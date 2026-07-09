@@ -1,0 +1,111 @@
+<% layout('layouts/main') %>
+
+<h3>إضافة عقار</h3>
+
+<form method="POST" action="/properties/create">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+    <label>اسم المالك</label>
+    <input name="owner" class="form-control" required>
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>هاتف المالك</label>
+    <input name="ownerPhone" class="form-control">
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>اسم المشترك</label>
+    <input name="occupant" class="form-control" required>
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>هاتف المشترك</label>
+    <input name="occupantPhone" class="form-control">
+</div>
+
+<div class="col-md-12 mb-3">
+    <label>الوصف</label>
+    <textarea name="description" class="form-control"></textarea>
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>الطابق</label>
+    <input name="floor" class="form-control">
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>نوع العقار</label>
+    <select name="propertyType" class="form-control">
+        <option value = 'Residential'>سكني</option>
+        <option value = 'Commercial'>تجاري</option>
+        <option value = 'Agricultural'>زراعي</option>
+        <option value = 'Warehouse'>مستودع</option>
+        <option value = 'Land'>أرض</option>
+        <option value = 'Other'>أخرى</option>
+    </select>
+</div>
+
+<div class="col-md-6 mb-3">
+
+    <label class="form-label">
+        فئة العقار
+    </label>
+
+    <select name="category" class="form-select">
+
+        <option value="A">
+            A - رسم نفايات 20
+        </option>
+
+        <option value="B">
+            B - رسم نفايات 15
+        </option>
+
+        <option value="C">
+            C - رسم نفايات 10
+        </option>
+
+        <option value="D">
+            D - رسم نفايات 5
+        </option>
+
+    </select>
+
+</div>
+
+<div class="col-md-12 mb-3">
+    <label>الحي</label>
+    <select name="neighborhood" class="form-control">
+        <option value = 'الغربية'>الغربية</option>
+        <option value = 'طريق الجديد'>طريق الجديد</option>
+        <option value = 'طريق الشكارة'>طريق الشكارة</option>
+        <option value = 'الاسبرية'>الاسبرية</option>
+        <option value = 'اسعدية'>اسعدية</option>
+        <option value = 'عوض'>عوض</option>
+        <option value = 'طريق النهر'>طريق النهر</option>
+        <option value = 'طريق العام'>طريق العام</option>
+        <option value = 'قبة النصر'>قبة النصر</option>
+        
+    </select>
+</div>
+
+<div class="form-check col-md-6">
+    <input type="checkbox" name="hasWater" class="form-check-input">
+    <label>خدمة المياه</label>
+</div>
+
+<div class="form-check col-md-6">
+    <input type="checkbox" name="hasTrash" class="form-check-input">
+    <label>خدمة النفايات</label>
+</div>
+
+</div>
+
+<button class="btn btn-success mt-3">
+    حفظ
+</button>
+
+</form>

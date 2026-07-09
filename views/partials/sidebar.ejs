@@ -1,0 +1,87 @@
+<!-- Mobile Navbar -->
+<nav class="navbar navbar-dark bg-primary d-lg-none">
+
+    <div class="container-fluid">
+
+        <span class="navbar-brand mb-0">
+            بلدية مشتى حسن
+        </span>
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mobileMenu">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+    </div>
+
+</nav>
+
+<div class="collapse d-lg-none" id="mobileMenu">
+
+    <div class="bg-light border-bottom p-2">
+
+        <a class="d-block py-2 text-decoration-none" href="/dashboard">
+            📊 لوحة التحكم
+        </a>
+
+        <a class="d-block py-2 text-decoration-none" href="/properties">
+            🏠 العقارات
+        </a>
+
+        <a class="d-block py-2 text-decoration-none" href="/bills">
+            🧾 الفواتير
+        </a>
+
+        <% if(user.role === 'admin'){ %>
+
+            <a class="d-block py-2 text-decoration-none" href="/users">
+                👥 المستخدمين
+            </a>
+
+        <% } %>
+
+        <a class="d-block py-2 text-decoration-none text-danger" href="/logout">
+            🚪 تسجيل خروج
+        </a>
+
+    </div>
+
+</div>
+
+<!-- Desktop Sidebar -->
+<div class="sidebar d-none d-lg-block">
+
+    <h4 class="text-center mt-3 mb-4">
+        بلدية مشتى حسن
+    </h4>
+
+    <a href="/dashboard">
+        📊 لوحة التحكم
+    </a>
+
+    <a href="/properties">
+        🏠 العقارات
+    </a>
+
+    <a href="/bills">
+        🧾 الفواتير
+    </a>
+
+    <% if(user.role === 'admin'){ %>
+
+        <a href="/users">
+            👥 المستخدمين
+        </a>
+
+    <% } %>
+
+    <a href="/logout">
+        🚪 تسجيل خروج
+    </a>
+
+</div>

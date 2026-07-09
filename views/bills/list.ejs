@@ -1,0 +1,168 @@
+<% layout('layouts/main') %>
+
+<h3>الفواتير</h3>
+<% if(user.role === 'admin'){ %>
+<a href="/bills/generate" class="btn btn-primary">
+    إصدار الفواتير
+</a>
+<% } %>
+
+<div class="table-responsive">
+
+    <div class="card mb-3">
+
+        <div class="card-body">
+    
+            <form method="GET" action="/bills">
+    
+                <div class="row">
+    
+                    <div class="col-md-5 mb-2">
+    
+                        <label class="form-label">
+                            اسم المشترك
+                        </label>
+    
+                        <input
+                            type="text"
+                            name="occupant"
+                            class="form-control"
+                            value="<%= filters?.occupant || '' %>"
+                            placeholder="ابحث باسم المشترك">
+    
+                    </div>
+    
+                    <div class="col-md-4 mb-2">
+    
+                        <label class="form-label">
+                            الحي
+                        </label>
+    
+                        <select
+                            name="neighborhood"
+                            class="form-select">
+    
+                            <option value="">جميع الأحياء</option>
+    
+                            <% neighborhoods.forEach(n => { %>
+    
+                                <option
+                                    value="<%= n %>"
+                                    <%= filters?.neighborhood === n ? 'selected' : '' %>>
+    
+                                    <%= n %>
+    
+                                </option>
+    
+                            <% }) %>
+    
+                        </select>
+    
+                    </div>
+    
+                    <div class="col-md-3 d-flex align-items-end">
+    
+                        <button class="btn btn-primary me-2">
+    
+                            بحث
+    
+                        </button>
+    
+                        <a
+                            href="/bills"
+                            class="btn btn-secondary">
+    
+                            إعادة تعيين
+    
+                        </a>
+    
+                    </div>
+    
+                </div>
+    
+            </form>
+    
+        </div>
+    
+    </div>
+
+<table class="table table-striped">
+
+<thead>
+<tr>
+    <th>المشترك</th>
+    <th>النوع</th>
+    <th>الشهر</th>
+    <th>السنة</th>
+    <th>المبلغ</th>
+    <th>الحالة</th>
+    <th>إجراءات</th>
+</tr>
+</thead>
+
+<tbody>
+
+<% bills.forEach(b => { %>
+
+<tr>
+
+    <td><%= b.occupant %></td>
+
+    <td>
+        <%= b.billType === 'Water' ? 'مياه ' : 'نفايات ' %>
+    </td>
+
+    <td><%= b.month %></td>
+    <td><%= b.year %></td>
+
+    <td><%= b.amount %></td>
+
+    <td>
+        <% if(b.status === 'Paid'){ %>
+            <span class="badge bg-success">مدفوع</span>
+            
+
+        <% } else { %>
+            <span class="badge bg-warning text-dark">غير مدفوع</span>
+        <% } %>
+    </td>
+
+    <td>
+
+        <% if (b.status !== 'Paid') { %>
+    
+            <form
+                method="POST"
+                action="/bills/pay/<%= b.id %>"
+                onsubmit="return confirm('هل أنت متأكد؟');">
+    
+                <button class="btn btn-success btn-sm">
+                    دفع
+                </button>
+    
+            </form>
+    
+        <% } else { %>
+    
+            <a
+                href="/bills/receipt/<%= b.id %>"
+                target="_blank"
+                class="btn btn-primary btn-sm">
+    
+                🖨
+    
+            </a>
+    
+        <% } %>
+    
+    </td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>

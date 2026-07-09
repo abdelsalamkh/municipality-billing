@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>إيصال قبض</title>
+
+<style>
+
+body{
+
+    font-family:Arial;
+
+    width:80mm;
+
+    margin:auto;
+
+    padding:10px;
+
+    direction:rtl;
+
+    font-size:14px;
+
+}
+
+h2,h4{
+
+    text-align:center;
+
+    margin:5px;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+td{
+
+    padding:4px 0;
+
+    vertical-align:top;
+
+}
+
+.line{
+
+    border-top:1px dashed #000;
+
+    margin:8px 0;
+
+}
+
+.center{
+
+    text-align:center;
+
+}
+
+@media print{
+
+    button{
+
+        display:none;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<button onclick="window.print()">
+
+🖨 طباعة
+
+</button>
+
+<h2>
+
+بلدية مشتى حسن
+
+</h2>
+
+<h4>
+
+إيصال قبض
+
+</h4>
+
+<div class="line"></div>
+
+<table>
+
+<tr>
+
+<td>رقم الفاتورة</td>
+
+<td><%= bill.billNumber %></td>
+
+</tr>
+
+<tr>
+
+<td>رمز الفاتورة</td>
+
+<td><%= bill.billCode %></td>
+
+</tr>
+
+<tr>
+
+<td>العقار</td>
+
+<td><%= bill.propertyCode %></td>
+
+</tr>
+
+<tr>
+
+<td>المشترك</td>
+
+<td><%= bill.occupant %></td>
+
+</tr>
+
+<tr>
+
+<td>الحي</td>
+
+<td><%= bill.neighborhood %></td>
+
+</tr>
+
+<tr>
+
+<td>النوع</td>
+
+<td>
+
+<%= bill.billType=="Water"
+? "مياه"
+: "نفايات" %>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>الشهر</td>
+
+<td><%= bill.month %> / <%= bill.year %></td>
+
+</tr>
+
+<tr>
+
+<td>المبلغ</td>
+
+<td><%= bill.amount %> $</td>
+
+</tr>
+
+<tr>
+
+<td>الحالة</td>
+
+<td>
+
+مدفوعة
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>تاريخ الدفع</td>
+
+<td>
+
+<%= new Date(bill.paymentDate).toLocaleString('ar-LB') %>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>المستلم</td>
+
+<td>
+
+<%= bill.receivedBy %>
+
+</td>
+
+</tr>
+
+</table>
+
+<div class="line"></div>
+
+<div class="center">
+
+شكراً لكم
+
+<br>
+
+بلدية مشتى حسن
+
+</div>
+
+</body>
+
+</html>

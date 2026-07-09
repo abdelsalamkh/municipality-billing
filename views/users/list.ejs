@@ -1,0 +1,131 @@
+<% layout('layouts/main') %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h3>المستخدمون</h3>
+
+    <a href="/users/create"
+       class="btn btn-primary">
+
+        إضافة مستخدم
+
+    </a>
+
+</div>
+
+<div class="card">
+
+<div class="table-responsive">
+
+<table class="table table-hover">
+
+<thead>
+
+<tr>
+
+<th>الاسم</th>
+
+<th>اسم المستخدم</th>
+
+<th>الدور</th>
+<th>الحالة</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% users.forEach(u=>{ %>
+
+<tr>
+
+<td><%= u.name %></td>
+
+<td><%= u.username %></td>
+
+<td>
+
+<%= u.role==="admin"
+?"مدير":"جابي" %>
+
+</td>
+
+<td>
+
+    <% if (u.active) { %>
+
+        <span class="badge bg-success">
+            نشط
+        </span>
+
+    <% } else { %>
+
+        <span class="badge bg-danger">
+            موقوف
+        </span>
+
+    <% } %>
+
+</td>
+
+<td>
+
+<a
+href="/users/edit/<%=u.id%>"
+class="btn btn-warning btn-sm">
+
+تعديل
+
+</a>
+
+<% if (u.active) { %>
+
+    <form
+        action="/users/deactivate/<%= u.id %>"
+        method="POST"
+        style="display:inline;">
+    
+        <button
+            class="btn btn-danger btn-sm"
+            onclick="return confirm('هل تريد إيقاف هذا المستخدم؟')">
+    
+            إيقاف
+    
+        </button>
+    
+    </form>
+    
+    <% } else { %>
+    
+    <form
+        action="/users/activate/<%= u.id %>"
+        method="POST"
+        style="display:inline;">
+    
+        <button
+            class="btn btn-success btn-sm">
+    
+            تفعيل
+    
+        </button>
+    
+    </form>
+    
+    <% } %>
+
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>

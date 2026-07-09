@@ -1,0 +1,34 @@
+<% layout('layouts/main') %>
+
+<h3>إنشاء فاتورة</h3>
+
+<form method="POST" action="/bills/create">
+
+<input type="hidden" name="propertyId" value="<%= propertyId %>">
+
+<input type="hidden" name="billType" value="<%= type %>">
+
+<div class="row">
+
+    <div class="col-md-6 mb-3">
+        <label>السنة</label>
+        <input name="year" class="form-control" required>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label>الشهر</label>
+        <input name="month" class="form-control" required>
+    </div>
+
+    <div class="col-md-12 mb-3">
+        <label>المبلغ</label>
+        <input name="amount" class="form-control" required>
+    </div>
+
+</div>
+
+<button class="btn btn-success">
+    حفظ الفاتورة
+</button>
+
+</form>

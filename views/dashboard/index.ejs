@@ -1,0 +1,53 @@
+<% layout('layouts/main') %>
+
+<h3>لوحة التحكم</h3>
+
+<div class="row">
+
+    <div class="col-md-3 mb-3">
+        <div class="card p-3">
+            <h5>العقارات</h5>
+            <h3><%= stats.properties %></h3>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card p-3">
+            <h5>فواتير المياه</h5>
+            <h3><%= stats.waterBills %></h3>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card p-3">
+            <h5>فواتير النفايات</h5>
+            <h3><%= stats.trashBills %></h3>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card p-3">
+            <h5>غير مدفوع</h5>
+            <h3><%= stats.unpaidBills %></h3>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="col-md-6 mb-3">
+        <div class="card p-3">
+            <h5>تحصيل اليوم</h5>
+            <h3><%= stats.paidToday %></h3>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <div class="card p-3">
+            <h5>تحصيل الشهر</h5>
+            <h3><%= stats.monthlyCollection %></h3>
+        </div>
+    </div>
+
+</div>

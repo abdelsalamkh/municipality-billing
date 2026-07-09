@@ -1,0 +1,162 @@
+<% layout('layouts/main') %>
+
+<h3>تفاصيل العقار</h3>
+
+<div class="card p-3 mb-3">
+
+    <h5><%= property.propertyCode %></h5>
+
+    <p><b>المالك:</b> <%= property.owner %></p>
+    <p><b>المشترك:</b> <%= property.occupant %></p>
+    <p><b>رقم الهاتف:</b> <%= property.occupantPhone %></p>
+    <p><b>الحي:</b> <%= property.neighborhood %></p>
+    <p><b>الخدمات:</b>
+        <% if(property.hasWater){ %> 💧 مياه <% } %>
+        <% if(property.hasTrash){ %> 🗑️ نفايات <% } %>
+    </p>
+
+    <p>
+
+        <strong>الفئة:</strong>
+        
+        <span class="badge bg-primary">
+        
+        <%= property.category %>
+        
+        </span>
+        
+        </p>
+
+        <p>
+
+            <strong>رسم النفايات:</strong>
+            
+            <% if(property.category === 'A'){ %>
+            
+            20
+            
+            <% }else if(property.category === 'B'){ %>
+            
+            15
+            
+            <% }else if(property.category === 'C'){ %>
+            
+            10
+            
+            <% }else{ %>
+            
+            5
+            
+            <% } %>
+            
+            </p>
+
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+
+    <h5>الفواتير</h5>
+
+    <div>
+        <a href="/properties/edit/<%= property.id %>"
+            class="btn btn-warning">
+             تعديل بيانات العقار
+         </a>
+
+        <% if (!property.hasExemption) { %>
+
+            <% if (property.hasWater) { %>
+                <a href="/bills/create/<%= property.id %>/Water"
+                   class="btn btn-primary btn-sm">
+                    <i class="bi bi-droplet-fill"></i>
+                    فاتورة مياه
+                </a>
+            <% } %>
+
+            <% if (property.hasTrash) { %>
+                <a href="/bills/create/<%= property.id %>/Trash"
+                   class="btn btn-secondary btn-sm">
+                    <i class="bi bi-trash"></i>
+                    فاتورة نفايات
+                </a>
+            <% } %>
+
+        <% } else { %>
+
+            <span class="badge bg-success fs-6">
+                هذا العقار معفى من الرسوم
+            </span>
+
+        <% } %>
+
+    </div>
+
+</div>
+
+<div class="table-responsive">
+
+<table class="table table-striped">
+
+<thead>
+<tr>
+    <th>النوع</th>
+    <th>الشهر</th>
+    <th>السنة</th>
+    <th>المبلغ</th>
+    <th>الحالة</th>
+    <th>إجراءات</th>
+</tr>
+</thead>
+
+<tbody>
+
+<% bills.forEach(b => { %>
+
+<tr>
+
+    <td><%= b.billType === 'Water' ? 'مياه 💧' : 'نفايات 🗑️' %></td>
+    <td><%= b.month %></td>
+    <td><%= b.year %></td>
+    <td><%= b.amount %></td>
+
+    <td>
+        <% if(b.status === 'Paid'){ %>
+            <span class="badge bg-success">مدفوع</span>
+        
+        <% } else { %>
+            <span class="badge bg-warning text-dark">غير مدفوع</span>
+        <% } %>
+    </td>
+
+    <td>
+
+        <% if(b.status !== 'Paid'){ %>
+        <form method="POST" action="/bills/pay/<%= b.id %>" onsubmit="return confirm('هل أنت متأكد ؟');">
+            <button class="btn btn-success btn-sm">
+                دفع
+            </button>
+        </form>
+        <% }  else { %>
+    
+            <a
+                href="/bills/receipt/<%= b.id %>"
+                target="_blank"
+                class="btn btn-primary btn-sm">
+    
+                🖨
+    
+            </a>
+    
+        <% } %>
+
+    </td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>

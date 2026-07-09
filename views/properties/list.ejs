@@ -1,0 +1,144 @@
+<% layout('layouts/main') %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h3>العقارات</h3>
+   
+    <% if(user.role === 'admin'){ %>
+       
+        
+    <a href="/properties/create" class="btn btn-primary">
+        + إضافة عقار
+    </a>
+
+    <a href="/properties/import"
+   class="btn btn-success">
+
+   📥 استيراد Excel
+
+</a>
+
+<a href="/properties/export" class="btn btn-success">
+    📤 تصدير إلى Excel
+</a>
+<% } %>
+
+</div>
+
+<form method="GET" action="/properties" class="row mb-6">
+    
+    <div class="col-md-4 mb-2">
+        <input
+            type="text"
+            name="occupant"
+            class="form-control"
+            placeholder="اسم المشترك"
+        >
+    </div>
+
+    <div class="col-md-4 mb-2">
+        <select name="neighborhood" class="form-control">
+            <option value="">كل الأحياء</option>
+            <option >الغربية</option>
+            <option>طريق الجديد</option>
+            <option>طريق الشكارة</option>
+            <option>الاسبرية</option>
+            <option>اسعدية</option>
+            <option>عوض</option>
+            <option>طريق النهر</option>
+            <option>طريق العام</option>
+            <option>قبة النصر</option>
+        </select>
+    </div>
+
+    <div class="col-md-2 mb-2">
+        <button class="btn btn-primary w-100">بحث</button>
+    </div>
+
+</form>
+
+<div class="table-responsive">
+
+<table class="table table-striped">
+
+<thead>
+<tr>
+    <th>الرمز</th>
+    <th>المالك</th>
+    <th>المشترك</th>
+    <th>الحي</th>
+    <th>الخدمات</th>
+    <th>الفئة</th>
+    <th>إجراءات</th>
+</tr>
+</thead>
+
+<tbody>
+
+<% properties.forEach(p => { %>
+
+<tr>
+
+    <td><a href="/properties/<%= p.id %>">
+        <%= p.propertyCode %>
+    </a></td>
+    <td><%= p.owner %></td>
+    <td><%= p.occupant %></td>
+    <td><%= p.neighborhood %></td>
+
+    <td>
+        <% if(p.hasWater){ %>مياه <% } %>
+        <% if(p.hasTrash){ %>نفايات <% } %>
+    </td>
+    <td>
+
+        <span class="badge bg-primary">
+        
+            <%= p.category %>
+        
+        </span>
+        
+        </td>
+
+    <td>
+        <% if(user.role === 'admin'){ %>
+        <a href="/properties/edit/<%= p.id %>"
+            class="btn btn-warning btn-sm">
+             تعديل
+         </a>
+         <% } %>
+         
+        <% if (!p.hasExemption) { %>
+    
+            <% if (p.hasWater) { %>
+                <a href="/bills/create/<%= p.id %>/Water"
+                   class="btn btn-sm btn-primary">
+                    مياه
+                </a>
+            <% } %>
+    
+            <% if (p.hasTrash) { %>
+                <a href="/bills/create/<%= p.id %>/Trash"
+                   class="btn btn-sm btn-secondary">
+                    نفايات
+                </a>
+            <% } %>
+    
+        <% } else { %>
+    
+            <span class="badge bg-success">
+                معفى
+            </span>
+    
+        <% } %>
+    </td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>

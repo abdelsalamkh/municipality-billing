@@ -1,0 +1,179 @@
+<% layout('layouts/main') %>
+
+<div class="container">
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                إنشاء الفواتير الشهرية
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST" action="/bills/generate" onsubmit="return confirm('هل أنت متأكد من إنشاء الفواتير لهذا الشهر؟');">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            السنة
+                        </label>
+
+                        <select name="year" class="form-select" required>
+
+                            <% for(let y = currentYear + 1; y >= 2024; y--){ %>
+
+                                <option
+                                    value="<%= y %>"
+                                    <%= y == currentYear ? 'selected' : '' %>>
+                                    <%= y %>
+                                </option>
+
+                            <% } %>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            الشهر
+                        </label>
+
+                        <select name="month" class="form-select" required>
+
+                            <option value="1" <%= currentMonth==1?'selected':'' %>>كانون الثاني</option>
+                            <option value="2" <%= currentMonth==2?'selected':'' %>>شباط</option>
+                            <option value="3" <%= currentMonth==3?'selected':'' %>>آذار</option>
+                            <option value="4" <%= currentMonth==4?'selected':'' %>>نيسان</option>
+                            <option value="5" <%= currentMonth==5?'selected':'' %>>أيار</option>
+                            <option value="6" <%= currentMonth==6?'selected':'' %>>حزيران</option>
+                            <option value="7" <%= currentMonth==7?'selected':'' %>>تموز</option>
+                            <option value="8" <%= currentMonth==8?'selected':'' %>>آب</option>
+                            <option value="9" <%= currentMonth==9?'selected':'' %>>أيلول</option>
+                            <option value="10" <%= currentMonth==10?'selected':'' %>>تشرين الأول</option>
+                            <option value="11" <%= currentMonth==11?'selected':'' %>>تشرين الثاني</option>
+                            <option value="12" <%= currentMonth==12?'selected':'' %>>كانون الأول</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="form-check mb-2">
+
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="generateWater"
+                        name="generateWater"
+                        checked>
+
+                    <label class="form-check-label" for="generateWater">
+                        إنشاء فواتير المياه
+                    </label>
+
+                </div>
+
+                <div class="form-check mb-4">
+
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="generateTrash"
+                        name="generateTrash"
+                        checked>
+
+                    <label class="form-check-label" for="generateTrash">
+                        إنشاء فواتير النفايات
+                    </label>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    إنشاء الفواتير
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <% if(result){ %>
+
+    <div class="card mt-4">
+
+        <div class="card-header bg-info text-white">
+            نتيجة العملية
+        </div>
+
+        <div class="card-body">
+
+            <% if(result.success){ %>
+
+                <div class="alert alert-success">
+
+                    <h5>تم إنشاء الفواتير بنجاح</h5>
+
+                    <hr>
+
+                    <p>
+                        💧 فواتير المياه:
+                        <strong><%= result.waterCreated %></strong>
+                    </p>
+
+                    <p>
+                        🗑️ فواتير النفايات:
+                        <strong><%= result.trashCreated %></strong>
+                    </p>
+
+                    <p>
+                        🟢 العقارات المعفاة:
+                        <strong><%= result.skippedExemption %></strong>
+                    </p>
+
+                    <p>
+                        🚫 بدون خدمة مياه:
+                        <strong><%= result.skippedNoWater %></strong>
+                    </p>
+
+                    <p>
+                        🚫 بدون خدمة نفايات:
+                        <strong><%= result.skippedNoTrash %></strong>
+                    </p>
+
+                    <p>
+                        📄 فواتير موجودة مسبقاً:
+                        <strong><%= result.duplicateBills %></strong>
+                    </p>
+
+                </div>
+
+            <% } else { %>
+
+                <div class="alert alert-danger">
+
+                    <%= result.message %>
+
+                </div>
+
+            <% } %>
+
+        </div>
+
+    </div>
+
+    <% } %>
+
+</div>

@@ -1,0 +1,105 @@
+body{
+    font-family: 'Cairo', sans-serif;
+    background: #f5f6fa;
+    direction: rtl;
+    margin:0;
+}
+
+.sidebar {
+
+    width: 240px;
+    min-height: 100vh;
+
+    position: fixed;
+
+    top: 0;
+    right: 0;
+
+    background: #0d6efd;
+
+    color: white;
+
+    overflow-y: auto;
+
+}
+
+.sidebar a {
+
+    display: block;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 14px 20px;
+
+}
+
+.sidebar a:hover {
+
+    background: rgba(255,255,255,.15);
+
+}
+
+.content {
+
+    margin-left: 240px;
+
+    padding: 20px;
+
+}
+
+.main-content{
+
+    margin-right:240px;
+    min-height:100vh;
+
+}
+
+@media (max-width:991px){
+
+    .sidebar{
+
+        display:none;
+
+    }
+
+    .main-content{
+
+        margin-right:0;
+        padding-top:10px;
+
+    }
+
+}
+
+.topbar{
+    height:60px;
+    background:white;
+    border-bottom:1px solid #ddd;
+    display:flex;
+    justify-content: flex-start;
+    align-items:center;
+    padding:0 30px;
+}
+
+.card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.card h3 {
+    font-weight: bold;
+}
+
+.footer{
+
+    background:#f8f9fa;
+
+    color:#6c757d;
+
+    font-size:14px;
+
+}

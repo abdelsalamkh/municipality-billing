@@ -1,0 +1,189 @@
+<% layout('layouts/main') %>
+
+<h3>تعديل العقار</h3>
+
+<form method="POST" action="/properties/edit/<%= property.id %>">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+    <label>اسم المالك</label>
+    <input
+        name="owner"
+        class="form-control"
+        value="<%= property.owner %>"
+        required>
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>هاتف المالك</label>
+    <input
+        name="ownerPhone"
+        class="form-control"
+        value="<%= property.ownerPhone %>">
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>اسم المشترك</label>
+    <input
+        name="occupant"
+        class="form-control"
+        value="<%= property.occupant %>"
+        required>
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>هاتف المشترك</label>
+    <input
+        name="occupantPhone"
+        class="form-control"
+        value="<%= property.occupantPhone %>">
+</div>
+
+<div class="col-md-12 mb-3">
+    <label>الوصف</label>
+    <textarea
+        name="description"
+        class="form-control"><%= property.description %></textarea>
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>الطابق</label>
+    <input
+        name="floor"
+        class="form-control"
+        value="<%= property.floor %>">
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>نوع العقار</label>
+
+    <select name="propertyType" class="form-select">
+
+        <option value="Residential" <%= property.propertyType === 'Residential' ? 'selected' : '' %>>سكني</option>
+
+        <option value="Commercial" <%= property.propertyType === 'Commercial' ? 'selected' : '' %>>تجاري</option>
+
+        <option value="Agricultural" <%= property.propertyType === 'Agricultural' ? 'selected' : '' %>>زراعي</option>
+
+        <option value="Warehouse" <%= property.propertyType === 'Warehouse' ? 'selected' : '' %>>مستودع</option>
+
+        <option value="Land" <%= property.propertyType === 'Land' ? 'selected' : '' %>>أرض</option>
+
+        <option value="Other" <%= property.propertyType === 'Other' ? 'selected' : '' %>>أخرى</option>
+
+    </select>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+    <label class="form-label">
+        فئة العقار
+    </label>
+
+    <select name="category" class="form-select">
+
+        <option value="A"
+            <%= property && property.category === 'A' ? 'selected' : '' %>>
+            A - رسم نفايات 20
+        </option>
+
+        <option value="B"
+            <%= property && property.category === 'B' ? 'selected' : '' %>>
+            B - رسم نفايات 15
+        </option>
+
+        <option value="C"
+            <%= property && property.category === 'C' ? 'selected' : '' %>>
+            C - رسم نفايات 10
+        </option>
+
+        <option value="D"
+            <%= !property || property.category === 'D' ? 'selected' : '' %>>
+            D - رسم نفايات 5
+        </option>
+
+    </select>
+
+</div>
+
+<div class="col-md-12 mb-3">
+
+    <label>الحي</label>
+
+    <select name="neighborhood" class="form-select">
+
+        <option value = 'الغربية' <%= property.neighborhood === 'الغربية' ? 'selected' : '' %>>الغربية</option>
+
+        <option value = 'طريق الجديد' <%= property.neighborhood === 'طريق الجديد'  ? 'selected' : '' %>>طريق الجديد</option>
+
+        <option value = 'طريق الشكارة' <%= property.neighborhood === 'طريق الشكارة'  ? 'selected' : '' %>>طريق الشكارة</option>
+    
+        <option value = 'الاسبرية' <%= property.neighborhood === 'الاسبرية'  ? 'selected' : '' %>>الاسبرية</option>
+
+        <option value = 'اسعدية' <%= property.neighborhood === 'اسعدية'  ? 'selected' : '' %>>اسعدية</option>
+
+        <option value = 'عوض' <%= property.neighborhood === 'عوض'  ? 'selected' : '' %>>عوض</option>
+
+        <option value = 'طريق النهر' <%= property.neighborhood === 'طريق النهر'  ? 'selected' : '' %>>طريق النهر</option>
+
+        <option value = 'طريق العام' <%= property.neighborhood === 'طريق العام'  ? 'selected' : '' %>>طريق العام</option>
+
+        <option value = 'قبة النصر' <%= property.neighborhood === 'قبة النصر'  ? 'selected' : '' %>>قبة النصر</option>
+
+        
+    </select>
+
+</div>
+
+<div class="col-md-4 form-check mb-3">
+    <input
+        class="form-check-input"
+        type="checkbox"
+        name="hasWater"
+        value="1"
+        <%= property.hasWater ? 'checked' : '' %>>
+
+    <label class="form-check-label">
+        خدمة المياه
+    </label>
+</div>
+
+<div class="col-md-4 form-check mb-3">
+    <input
+        class="form-check-input"
+        type="checkbox"
+        name="hasTrash"
+        value="1"
+        <%= property.hasTrash ? 'checked' : '' %>>
+
+    <label class="form-check-label">
+        خدمة النفايات
+    </label>
+</div>
+
+<div class="col-md-4 form-check mb-3">
+    <input
+        class="form-check-input"
+        type="checkbox"
+        name="hasExemption"
+        value="1"
+        <%= property.hasExemption ? 'checked' : '' %>>
+
+    <label class="form-check-label">
+        معفى من الرسوم
+    </label>
+</div>
+
+</div>
+
+<button class="btn btn-success">
+    حفظ التعديلات
+</button>
+
+<a href="/properties/<%= property.id %>" class="btn btn-secondary">
+    إلغاء
+</a>
+
+</form>
