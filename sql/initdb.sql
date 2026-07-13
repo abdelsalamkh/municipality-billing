@@ -9,7 +9,7 @@ CREATE TABLE users (
 
 CREATE TABLE properties (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    propertyCode VARCHAR(20) UNIQUE AFTER id,
+    propertyCode VARCHAR(20) UNIQUE,
 
     owner VARCHAR(150) NOT NULL,
     ownerPhone VARCHAR(30),
@@ -45,7 +45,7 @@ CREATE TABLE bills (
 
     billNumber VARCHAR(30) UNIQUE NOT NULL,
 
-    billCode VARCHAR(30) UNIQUE AFTER billNumber,
+    billCode VARCHAR(30) UNIQUE,
 
     propertyId INT NOT NULL,
 
