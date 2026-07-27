@@ -42,6 +42,18 @@ async function getAll(filters = {}) {
 
     }
 
+    if (filters.status === 'Paid') {
+
+        sql += ` AND bills.status = 'Paid'`;
+
+    }
+
+    if (filters.status === 'Pending') {
+
+        sql += ` AND bills.status = 'Pending'`;
+
+    }
+
     sql += `
 
         ORDER BY
@@ -50,11 +62,15 @@ async function getAll(filters = {}) {
 
             bills.month DESC,
 
+            bills.paymentDate DESC,
+
             bills.billNumber DESC
 
     `;
 
     const [rows] = await db.execute(sql, params);
+
+    console.log(rows);
 
     return rows;
 
@@ -373,8 +389,134 @@ async function getReceipt(id) {
 
 }
 
+
+
+
+async function financialReport(filters = {}) {
+
+    let sql = `
+        SELECT
+            b.id,
+            b.billType,
+            b.amount,
+            b.paymentDate,
+            p.occupant,
+            p.neighborhood,
+            u.name AS receivedBy
+        FROM bills b
+        INNER JOIN properties p
+            ON p.id = b.propertyId
+        LEFT JOIN users u
+            ON u.id = b.receivedByUserId
+        WHERE b.status = 'Paid'
+    `;
+
+    const params = [];
+
+    if (filters.from) {
+        sql += ` AND DATE(b.paymentDate) >= ?`;
+        params.push(filters.from);
+    }
+
+    if (filters.to) {
+        sql += ` AND DATE(b.paymentDate) <= ?`;
+        params.push(filters.to);
+    }
+
+    if (filters.billType) {
+        sql += ` AND b.billType = ?`;
+        params.push(filters.billType);
+    }
+
+    if (filters.neighborhood) {
+        sql += ` AND p.neighborhood = ?`;
+        params.push(filters.neighborhood);
+    }
+
+    sql += `
+        ORDER BY
+            b.paymentDate DESC,
+            p.occupant
+    `;
+
+    const [rows] = await db.execute(sql, params);
+
+    return rows;
+
+}
+
+async function financialTotals(filters = {}) {
+
+    let sql = `
+        SELECT
+            b.billType,
+            SUM(b.amount) AS total
+        FROM bills b
+        INNER JOIN properties p
+            ON p.id = b.propertyId
+        WHERE b.status = 'Paid'
+    `;
+
+    const params = [];
+
+    if (filters.from) {
+        sql += ` AND DATE(b.paymentDate) >= ?`;
+        params.push(filters.from);
+    }
+
+    if (filters.to) {
+        sql += ` AND DATE(b.paymentDate) <= ?`;
+        params.push(filters.to);
+    }
+
+    if (filters.billType) {
+        sql += ` AND b.billType = ?`;
+        params.push(filters.billType);
+    }
+
+    if (filters.neighborhood) {
+        sql += ` AND p.neighborhood = ?`;
+        params.push(filters.neighborhood);
+    }
+
+    sql += `
+        GROUP BY b.billType
+    `;
+
+    const [rows] = await db.execute(sql, params);
+
+    let water = 0;
+    let trash = 0;
+
+    rows.forEach(r => {
+
+        if (r.billType === 'Water')
+            water = Number(r.total);
+
+        if (r.billType === 'Trash')
+            trash = Number(r.total);
+
+    });
+
+    return {
+
+        water,
+
+        trash,
+
+        total: water + trash
+
+    };
+
+}
+
+
+
 module.exports = {
     getAll,
     create,
-    pay, getBillsByPropertyId, generate, getByCode, getReceipt
+    pay, getBillsByPropertyId, generate, getByCode, getReceipt,
+    financialReport,
+
+    financialTotals
 };

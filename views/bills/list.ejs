@@ -59,6 +59,32 @@
                         </select>
     
                     </div>
+
+                    <div class="col-md-3 mb-2">
+
+                        <label class="form-label">
+                            الحالة
+                        </label>
+                    
+                        <select
+                            name="status"
+                            class="form-select">
+                    
+                            <option
+                                value="Pending"
+                                <%= filters?.status === 'Pending' ? 'selected' : '' %>>
+                                غير مدفوعة
+                            </option>
+                    
+                            <option
+                                value="Paid"
+                                <%= filters?.status === 'Paid' ? 'selected' : '' %>>
+                                مدفوعة
+                            </option>
+                    
+                        </select>
+                    
+                    </div>
     
                     <div class="col-md-3 d-flex align-items-end">
     
@@ -134,7 +160,7 @@
             <form
                 method="POST"
                 action="/bills/pay/<%= b.id %>"
-                onsubmit="return confirm('هل أنت متأكد؟');">
+                onsubmit="return payBill(event,<%= b.id %>);">
     
                 <button class="btn btn-success btn-sm">
                     دفع
@@ -166,3 +192,45 @@
 </table>
 
 </div>
+
+<script>
+
+    async function payBill(event, billId){
+    
+        event.preventDefault();
+    
+        if(!confirm("هل أنت متأكد من تسجيل عملية الدفع؟")){
+            return false;
+        }
+    
+        const form = event.target;
+    
+        const response = await fetch(form.action, {
+            method: 'POST'
+        });
+    
+        if(!response.ok){
+            alert("حدث خطأ أثناء الدفع");
+            return;
+        }
+    
+        const shouldPrint = confirm(
+            "تم تسجيل عملية الدفع بنجاح.\n\nهل تريد طباعة الإيصال؟"
+        );
+    
+        if(shouldPrint){
+    
+            window.open(
+                "/bills/receipt/" + billId,
+                "_blank"
+            );
+    
+        }
+    
+        window.location.reload();
+    
+        return false;
+    
+    }
+    
+    </script>

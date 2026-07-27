@@ -8,7 +8,8 @@ exports.list = async (req, res) => {
 
     const filters = {
         occupant: req.query.occupant || '',
-        neighborhood: req.query.neighborhood || ''
+        neighborhood: req.query.neighborhood || '',
+        status: req.query.status || 'Pending'
     };
 
     const bills = await billService.getAll(filters);
@@ -45,7 +46,7 @@ exports.create = async (req, res) => {
 
     await billService.create(req.body, req.session.user.id);
 
-    res.redirect('/bills');
+    res.redirect(req.get('Referer') || '/bills');
 };
 
 // Pay bill
@@ -53,7 +54,7 @@ exports.pay = async (req, res) => {
 
     await billService.pay(req.params.id, req.session.user.id);
 
-    res.redirect('/bills');
+    res.sendStatus(200);
 };
 
 /**
@@ -169,6 +170,53 @@ exports.receipt = async (req, res) => {
 
     res.render('bills/receipt', {
         bill
+    });
+
+};
+
+exports.reportPage = (req, res) => {
+
+    res.render('bills/report', {
+        report: null,
+    });
+
+};
+
+exports.financialReport = async (req, res) => {
+
+    const filters = {
+
+        from: req.query.from || '',
+
+        to: req.query.to || '',
+
+        billType: req.query.billType || '',
+
+        neighborhood: req.query.neighborhood || ''
+
+    };
+
+    const report =
+        await billService.financialReport(filters);
+
+    const totals =
+        await billService.financialTotals(filters);
+
+    const neighborhoods =
+        await propertyService.getNeighborhoods();
+
+    res.render('bills/report', {
+
+        user: req.session.user,
+
+        report,
+
+        totals,
+
+        filters,
+
+        neighborhoods
+
     });
 
 };

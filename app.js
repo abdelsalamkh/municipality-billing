@@ -35,7 +35,7 @@ app.use(session({
 }));
 
 app.get('/', (req, res) => {
-    res.send('Municipality Billing System');
+    res.redirect('login');
 });
 
 

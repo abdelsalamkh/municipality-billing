@@ -6,6 +6,8 @@ const { requireLogin } = require('../middleware/auth');
 
 router.get('/bills', requireLogin, controller.list);
 
+router.get('/bills/report', requireLogin, controller.financialReport);
+
 router.get('/verify-bill', controller.verifyPage);
 
 router.post('/verify-bill', controller.verify);

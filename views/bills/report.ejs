@@ -1,0 +1,309 @@
+<% layout('layouts/main') %>
+
+<h3 class="mb-4">
+    📈 التقرير المالي
+</h3>
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <form method="GET" action="/bills/report">
+
+            <div class="row">
+
+                <div class="col-md-3 mb-3">
+
+                    <label class="form-label">
+                        من تاريخ
+                    </label>
+
+                    <input
+                        type="date"
+                        name="from"
+                        class="form-control"
+                        value="<%= filters?.from || '' %>">
+
+                </div>
+
+                <div class="col-md-3 mb-3">
+
+                    <label class="form-label">
+                        إلى تاريخ
+                    </label>
+
+                    <input
+                        type="date"
+                        name="to"
+                        class="form-control"
+                        value="<%= filters?.to || '' %>">
+
+                </div>
+
+                <div class="col-md-2 mb-3">
+
+                    <label class="form-label">
+                        النوع
+                    </label>
+
+                    <select
+                        name="billType"
+                        class="form-select">
+
+                        <option value="">
+                            جميع الفواتير
+                        </option>
+
+                        <option
+                            value="Water"
+                            <%= filters?.billType === 'Water' ? 'selected' : '' %>>
+                            مياه
+                        </option>
+
+                        <option
+                            value="Trash"
+                            <%= filters?.billType === 'Trash' ? 'selected' : '' %>>
+                            نفايات
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2 mb-3">
+
+                    <label class="form-label">
+                        الحي
+                    </label>
+
+                    <select
+                        name="neighborhood"
+                        class="form-select">
+
+                        <option value="">
+                            جميع الأحياء
+                        </option>
+
+                        <% neighborhoods.forEach(n=>{ %>
+
+                            <option
+                                value="<%= n %>"
+                                <%= filters?.neighborhood===n ? 'selected' : '' %>>
+
+                                <%= n %>
+
+                            </option>
+
+                        <% }) %>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end mb-3">
+
+                    <button class="btn btn-primary w-100">
+
+                        عرض التقرير
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="row mb-4">
+
+    <div class="col-md-3 mb-3">
+
+        <div class="card text-center border-success">
+
+            <div class="card-body">
+
+                <h6>
+                    إجمالي المياه
+                </h6>
+
+                <h3 class="text-success">
+
+                    <%= totals.water %>
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3 mb-3">
+
+        <div class="card text-center border-warning">
+
+            <div class="card-body">
+
+                <h6>
+                    إجمالي النفايات
+                </h6>
+
+                <h3 class="text-warning">
+
+                    <%= totals.trash %>
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3 mb-3">
+
+        <div class="card text-center border-primary">
+
+            <div class="card-body">
+
+                <h6>
+                    الإجمالي
+                </h6>
+
+                <h3 class="text-primary">
+
+                    <%= totals.total %>
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3 mb-3">
+
+        <div class="card text-center border-dark">
+
+            <div class="card-body">
+
+                <h6>
+                    عدد الفواتير
+                </h6>
+
+                <h3>
+
+                    <%= report.length %>
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>تاريخ الدفع</th>
+
+                        <th>المشترك</th>
+
+                        <th>الحي</th>
+
+                        <th>النوع</th>
+
+                        <th>المبلغ</th>
+
+                        <th>المستلم</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                <% if(report.length === 0){ %>
+
+                    <tr>
+
+                        <td colspan="6" class="text-center">
+
+                            لا توجد بيانات
+
+                        </td>
+
+                    </tr>
+
+                <% } %>
+
+                <% report.forEach(r=>{ %>
+
+                    <tr>
+
+                        <td>
+
+                            <%= new Date(r.paymentDate).toLocaleDateString('ar-LB') %>
+
+                        </td>
+
+                        <td>
+
+                            <%= r.occupant %>
+
+                        </td>
+
+                        <td>
+
+                            <%= r.neighborhood %>
+
+                        </td>
+
+                        <td>
+
+                            <%= r.billType==='Water' ? '💧 مياه' : '🗑️ نفايات' %>
+
+                        </td>
+
+                        <td>
+
+                            <%= r.amount %>
+
+                        </td>
+
+                        <td>
+
+                            <%= r.receivedBy %>
+
+                        </td>
+
+                    </tr>
+
+                <% }) %>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
