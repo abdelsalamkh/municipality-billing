@@ -67,6 +67,7 @@
     <th>المالك</th>
     <th>المشترك</th>
     <th>الحي</th>
+    <th>النوع</th>
     <th>الخدمات</th>
     <th>الفئة</th>
     <th>إجراءات</th>
@@ -85,6 +86,23 @@
     <td><%= p.owner %></td>
     <td><%= p.occupant %></td>
     <td><%= p.neighborhood %></td>
+
+    <td>
+
+        <%
+            const propertyTypes = {
+                Residential: 'سكني',
+                Commercial: 'تجاري',
+                Agricultural: 'زراعي',
+                Warehouse: 'مستودع',
+                Land: 'أرض',
+                Other: 'أخرى'
+            };
+        %>
+    
+        <%= propertyTypes[p.propertyType] || p.propertyType %>
+    
+    </td>
 
     <td>
         <% if(p.hasWater){ %>مياه <% } %>
