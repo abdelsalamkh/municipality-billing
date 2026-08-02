@@ -89,12 +89,6 @@ async function getBillsByPropertyId(id) {
 // Create bill
 async function create(data, userId) {
 
-    const [countRows] = await db.execute(
-        'SELECT COUNT(*) as count FROM bills'
-    );
-
-    const count = countRows[0].count + 1;
-    const billNumber = `B-${String(count).padStart(6, '0')}`;
     const billCode = generateBillCode();
 
     const sql = `
@@ -112,8 +106,8 @@ async function create(data, userId) {
         VALUES (?,?,?,?,?,?,?, 'Pending', ?)
     `;
 
-    await db.execute(sql, [
-        billNumber,
+   const [result] =  await db.execute(sql, [
+        billCode,
         billCode,
         data.propertyId,
         data.billType,
@@ -122,6 +116,15 @@ async function create(data, userId) {
         data.amount,
         userId
     ]);
+
+    const billNumber = `${String(result.insertId).padStart(6, '0')}`;
+
+await db.execute(
+    `UPDATE bills
+     SET billNumber = ?
+     WHERE id = ?`,
+    [billNumber, result.insertId]
+);
 }
 
 // Pay bill
@@ -286,12 +289,14 @@ async function createBill(
 async function generateBillNumber() {
 
     const [rows] = await db.execute(
-        "SELECT COUNT(*) AS total FROM bills"
+        'SELECT IFNULL(MAX(id), 0) AS maxId FROM bills'
     );
+    
+    const nextId = rows[0].maxId + 1;
+    
+    const billNumber = `${String(nextId).padStart(6, '0')}`;
 
-    const next = rows[0].total + 1;
-
-    return String(next).padStart(8, '0');
+    return String(billNumber).padStart(8, '0');
 
 }
 

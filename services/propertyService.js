@@ -42,17 +42,10 @@ async function getById(id) {
 // Create property
 async function create(data) {
 
-    const [countRows] = await db.execute(
-        'SELECT COUNT(*) as count FROM properties'
-    );
 
-    const count = countRows[0].count + 1;
-
-    const propertyCode = `MH-${String(count).padStart(6, '0')}`;
 
     const sql = `
         INSERT INTO properties (
-            propertyCode,
             owner,
             ownerPhone,
             occupant,
@@ -64,11 +57,10 @@ async function create(data) {
             hasWater,
             hasTrash,
             active
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,true)
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,true)
     `;
 
     const values = [
-        propertyCode,
         data.owner,
         data.ownerPhone,
         data.occupant,
@@ -81,7 +73,15 @@ async function create(data) {
         data.hasTrash ? 1 : 0
     ];
 
-    await db.execute(sql, values);
+    const [result] = await db.execute(sql, values);
+    const propertyCode = `MH-${String(result.insertId).padStart(6, '0')}`;
+
+    await db.execute(
+        `UPDATE properties
+         SET propertyCode = ?
+         WHERE id = ?`,
+        [propertyCode, result.insertId]
+    );
 }
 
 // Soft delete
