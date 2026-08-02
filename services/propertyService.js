@@ -11,8 +11,12 @@ async function getAll(filters) {
     const params = [];
 
     if (filters.occupant) {
-        sql += ` AND occupant LIKE ?`;
+
+        sql += ` AND (occupant LIKE ? OR owner LIKE ?)`;
+    
         params.push(`%${filters.occupant}%`);
+        params.push(`%${filters.occupant}%`);
+    
     }
 
     if (filters.neighborhood) {
