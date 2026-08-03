@@ -70,8 +70,6 @@ async function getAll(filters = {}) {
 
     const [rows] = await db.execute(sql, params);
 
-    console.log(rows);
-
     return rows;
 
 }

@@ -53,7 +53,6 @@ exports.details = async (req, res) => {
     const property = await propertyService.getById(req.params.id);
 
     const bills = await billService.getBillsByPropertyId(req.params.id);
-    console.log(bills);
     res.render('properties/details', {
         user: req.session.user,
         property,
