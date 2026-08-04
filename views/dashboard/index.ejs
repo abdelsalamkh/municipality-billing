@@ -50,4 +50,218 @@
         </div>
     </div>
 
+    <div class="card p-3 mb-4">
+
+        <h5>📈 التحصيل اليومي</h5>
+    
+        <canvas id="dailyChart"></canvas>
+    
+    </div>
+
+    <div class="card p-3 mb-4">
+
+        <h5>📊 التحصيل الشهري</h5>
+    
+        <canvas id="monthlyChart"></canvas>
+    
+    </div>
+    <div class="card p-3">
+
+        <h5>
+        
+            النفايات
+        
+        </h5>
+        
+        <canvas id="trashPie"></canvas>
+        
+        </div>
+
+    <div class="card p-3">
+
+        <h5>
+        
+        💧 المياه
+        
+        </h5>
+        
+        <canvas id="waterPie"></canvas>
+        
+        </div>
+
+        
+
 </div>
+
+
+
+<script>
+
+const dailyLabels = <%- JSON.stringify(dailyChart.labels) %>;
+const dailyWater = <%- JSON.stringify(dailyChart.water) %>;
+const dailyTrash = <%- JSON.stringify(dailyChart.trash) %>;
+
+const monthlyLabels = <%- JSON.stringify(monthlyChart.labels) %>;
+const monthlyWater = <%- JSON.stringify(monthlyChart.water) %>;
+const monthlyTrash = <%- JSON.stringify(monthlyChart.trash) %>;
+
+const waterPaid = <%= waterPie.paid %>;
+const waterPending = <%= waterPie.pending %>;
+
+const trashPaid = <%= trashPie.paid %>;
+const trashPending = <%= trashPie.pending %>;
+
+    new Chart(document.getElementById('dailyChart'),{
+
+type:'line',
+
+data:{
+
+    labels:dailyLabels,
+
+    datasets:[
+
+        {
+
+            label:'المياه',
+
+            data:dailyWater
+
+        },
+
+        {
+
+            label:'النفايات',
+
+            data:dailyTrash
+
+        }
+
+    ]
+
+}
+
+});
+
+new Chart(
+
+document.getElementById("monthlyChart"),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:monthlyLabels,
+
+datasets:[
+
+{
+
+label:"المياه",
+
+data:monthlyWater,
+
+stack:"stack1"
+
+},
+
+{
+
+label:"النفايات",
+
+data:monthlyTrash,
+
+stack:"stack1"
+
+}
+
+]
+
+},
+
+options:{
+
+responsive:true,
+
+scales:{
+
+x:{stacked:true},
+
+y:{stacked:true}
+
+}
+
+}
+
+});
+
+new Chart(
+
+document.getElementById("waterPie"),
+
+{
+
+type:"pie",
+
+data:{
+
+labels:[
+
+"مدفوعة",
+
+"غير مدفوعة"
+
+],
+
+datasets:[{
+
+data:[
+
+waterPaid,
+
+waterPending
+
+]
+
+}]
+
+}
+
+});
+
+new Chart(
+
+document.getElementById("trashPie"),
+
+{
+
+type:"pie",
+
+data:{
+
+labels:[
+
+"مدفوعة",
+
+"غير مدفوعة"
+
+],
+
+datasets:[{
+
+data:[
+
+trashPaid,
+
+trashPending
+
+]
+
+}]
+
+}
+
+});
+</script>
