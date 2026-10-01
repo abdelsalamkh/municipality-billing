@@ -2,6 +2,8 @@ const billService = require('../services/billService');
 
 const propertyService = require('../services/propertyService');
 
+const userService = require('../services/userService');
+
 
 // List
 exports.list = async (req, res) => {
@@ -192,7 +194,9 @@ exports.financialReport = async (req, res) => {
 
         billType: req.query.billType || '',
 
-        neighborhood: req.query.neighborhood || ''
+        neighborhood: req.query.neighborhood || '',
+
+        employee: req.query.employee || ''
 
     };
 
@@ -205,6 +209,8 @@ exports.financialReport = async (req, res) => {
     const neighborhoods =
         await propertyService.getNeighborhoods();
 
+    const employees = await userService.getAll();
+
     res.render('bills/report', {
 
         user: req.session.user,
@@ -215,7 +221,10 @@ exports.financialReport = async (req, res) => {
 
         filters,
 
-        neighborhoods
+        neighborhoods,
+
+        employees
+        
 
     });
 

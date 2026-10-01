@@ -435,6 +435,11 @@ async function financialReport(filters = {}) {
         sql += ` AND p.neighborhood = ?`;
         params.push(filters.neighborhood);
     }
+    
+    if (filters.employee) {
+        sql += ` AND u.id = ?`;
+        params.push(filters.employee);
+    }
 
     sql += `
         ORDER BY
@@ -457,6 +462,8 @@ async function financialTotals(filters = {}) {
         FROM bills b
         INNER JOIN properties p
             ON p.id = b.propertyId
+        LEFT JOIN users u
+            ON u.id = b.receivedByUserId
         WHERE b.status = 'Paid'
     `;
 
@@ -480,6 +487,11 @@ async function financialTotals(filters = {}) {
     if (filters.neighborhood) {
         sql += ` AND p.neighborhood = ?`;
         params.push(filters.neighborhood);
+    }
+
+    if (filters.employee) {
+        sql += ` AND u.id = ?`;
+        params.push(filters.employee);
     }
 
     sql += `

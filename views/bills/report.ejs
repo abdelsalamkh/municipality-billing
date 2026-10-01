@@ -39,6 +39,35 @@
                         value="<%= filters?.to || '' %>">
 
                 </div>
+                <div class="col-md-2 mb-3">
+
+                    <label class="form-label">
+                        الموظف
+                    </label>
+
+                    <select
+                        name="employee"
+                        class="form-select">
+
+                        <option value="">
+                            جميع الموظفين
+                        </option>
+
+                        <% employees.forEach(n=>{ %>
+
+                            <option
+                                value="<%= n.id %>"
+                                <%= filters?.employees===n.id ? 'selected' : '' %>>
+
+                                <%= n.name %>
+
+                            </option>
+
+                        <% }) %>
+
+                    </select>
+
+                </div>
 
                 <div class="col-md-2 mb-3">
 
